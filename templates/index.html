@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BRCA Cancer Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 25px;
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>BRCA Prediction</h2>
+        <form id="predictionForm">
+            <label for="patient_name">Patient Name</label>
+            <input type="text" id="patient_name" name="patient_name" required>
+
+            <label>Worst Texture</label>
+            <input type="text" id="feature1" required>
+
+            <label>Radius Error</label>
+            <input type="text" id="feature2" required>
+
+            <label>Worst Symmetry</label>
+            <input type="text" id="feature3" required>
+
+            <label>Mean Concave points</label>
+            <input type="text" id="feature4" required>
+
+            <label>Worst Concavity</label>
+            <input type="text" id="feature5" required>
+
+            <label>Area Error</label>
+            <input type="text" id="feature6" required>
+
+            <label>Worst Radius</label>
+            <input type="text" id="feature7" required>
+
+            <label>Worst Area</label>
+            <input type="text" id="feature8" required>
+
+            <label>Mean Concavity</label>
+            <input type="text" id="feature9" required>
+
+            <label>Worst Concave points</label>
+            <input type="text" id="feature10" required>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const data = {
+                patient_name: document.getElementById('patient_name').value,
+                feature1: document.getElementById('feature1').value,
+                feature2: document.getElementById('feature2').value,
+                feature3: document.getElementById('feature3').value,
+                feature4: document.getElementById('feature4').value,
+                feature5: document.getElementById('feature5').value,
+                feature6: document.getElementById('feature6').value,
+                feature7: document.getElementById('feature7').value,
+                feature8: document.getElementById('feature8').value,
+                feature9: document.getElementById('feature9').value,
+                feature10: document.getElementById('feature10').value
+            };
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('result').innerText = `Prediction: ${result.prediction}`;
+            })
+            .catch(error => {
+                document.getElementById('result').innerText = `Error: ${error}`;
+            });
+        });
+    </script>
+</body>
+</html>
